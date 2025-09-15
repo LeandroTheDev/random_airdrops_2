@@ -1,0 +1,24 @@
+Sandbox_EN = {
+	Sandbox_Airdrop = "Air Drop",
+
+	Sandbox_RandomAirdrops_AirdropRemovalTimer = "Airdrop Removal Time"
+	Sandbox_RandomAirdrops_AirdropRemovalTimer_tooltip = "In game hours until airdrop despawn"
+
+	Sandbox_RandomAirdrops_AirdropFrequency = "Airdrop Frequency"
+	Sandbox_RandomAirdrops_AirdropFrequency_tooltip = "Chance to spawn any airdrop every in game hour, 1000 = 100%, 500 = 50%, 100 = 10%, 10 = 0.1%"
+
+	Sandbox_RandomAirdrops_AirdropTickCheck = "Airdrop Chunk Check Tick"
+	Sandbox_RandomAirdrops_AirdropTickCheck_tooltip = "This is the most performance important variable, impacts in how many ticks the server will WAIT to check player in area to spawn/olddespawn the airdrop (the airdrop doenst spawn if player is not reendering)."
+
+	Sandbox_RandomAirdrops_AirdropDisableDespawn = "Disable Despawn"
+	Sandbox_RandomAirdrops_AirdropDisableDespawn_tooltip = "Removes the despawn in game hours system for airdrops."
+
+	Sandbox_RandomAirdrops_AirdropDisableOldDespawn = "Disable Old Despawn"
+	Sandbox_RandomAirdrops_AirdropDisableOldDespawn_tooltip = "Disables the despawn all airdrops system when the server/game start."
+
+	Sandbox_RandomAirdrops_AirdropConsoleDebug = "Debug"
+	Sandbox_RandomAirdrops_AirdropConsoleDebug_tooltip = "Print console debugging."
+
+	Sandbox_RandomAirdrops_AirdropConsoleDebugCoordinates = "Debug Coordinates"
+	Sandbox_RandomAirdrops_AirdropConsoleDebugCoordinates_tooltip = "Print console debugging for coordinates airdrops when spawn, disabling that you cannot know in server-console.txt when and where the airdrop spawned."
+}

@@ -1,0 +1,47 @@
+VERSION = 1,
+
+option RandomAirdrops.AirdropRemovalTimer
+{
+	type = integer,
+	min = 0,
+	max = 2147483647,
+	default = 24,
+	page = Airdrop,
+	translation = RandomAirdrops_AirdropRemovalTimer,
+}
+
+option RandomAirdrops.AirdropFrequency
+{
+	type = integer,
+	min = 0,
+	max = 1000,
+	default = 50,
+	page = Airdrop,
+	translation = RandomAirdrops_AirdropFrequency,
+}
+
+option RandomAirdrops.AirdropTickCheck
+{
+	type = integer,
+	min = 0,
+	max = 2147483647,
+	default = 30,
+	page = Airdrop,
+	translation = RandomAirdrops_AirdropTickCheck,
+}
+
+option RandomAirdrops.AirdropConsoleDebug
+{
+	type = boolean,
+	default = false,
+	page = Airdrop,
+	translation = RandomAirdrops_AirdropConsoleDebug,
+}
+
+option RandomAirdrops.AirdropConsoleDebugCoordinates
+{
+	type = boolean,
+	default = false,
+	page = Airdrop,
+	translation = RandomAirdrops_AirdropConsoleDebugCoordinates,
+}

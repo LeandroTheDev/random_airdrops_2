@@ -1,0 +1,19 @@
+IGUI_EN = {
+	IGUI_Airdrop_Incoming = "Airdrop Incoming: %1 on %2"
+	IGUI_Airdrop_March_Ridge = "March Ridge",
+	IGUI_Airdrop_Muldraught = "Muldraught",
+	IGUI_Airdrop_Dixie = "Dixie",
+	IGUI_Airdrop_Doe_Valley = "Doe Valley",
+	IGUI_Airdrop_Rosewood = "Rosewood",
+	IGUI_Airdrop_Riverside = "Riverside",
+	IGUI_Airdrop_West_Point = "West Point",
+	IGUI_Airdrop_Valley_Station = "Valley Station",
+	IGUI_Airdrop_Fallas_Lake = "Fallas Lake",
+	IGUI_Airdrop_Louis_Ville = "Louis Ville",
+	IGUI_Airdrop_Far_Away_from_Riverside = "Far Away From Riverside",
+	IGUI_Airdrop_Far_Away_from_Rosewood = "Far Away From Rosewood",
+	IGUI_Airdrop_Nearest_West_Point = "Far Away From West Point",
+	IGUI_Airdrop_Nearest_Rosewood = "Nearest Rosewood",
+	IGUI_Airdrop_Nearest_March_Ridge = "Nearest March Ridget",
+	IGUI_Airdrop_Nearest_Muldraught" = "Nearest Muldraught",
+}
