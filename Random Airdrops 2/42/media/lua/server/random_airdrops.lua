@@ -426,8 +426,11 @@ local function getAvailableCoords()
         local available = true;
         for iterationCoords, _ in pairs(airdropsData) do
             if iterationCoords == coords then
-                available = false;
-                break;
+                -- Is not available if ticks to despawn is bigger than 0
+                if airdropsData[iterationCoords].ticksToDespawn > 0 then
+                    available = false;
+                    break;
+                end
             end
         end
         if available then
@@ -484,24 +487,37 @@ local function generateAirdropData(specific)
         end
 
         local selectedCoords = availableCoords[ZombRand(0, #availableCoords) + 1];
-        local config = airdropConfigPositions[selectedCoords];
 
-        if not config then
-            DebugPrintRandomAidrops("Cannot generate airdrop data, configuration not exist for: " .. selectedCoords);
-            return nil;
+        -- Check if the selected coords the airdrop is spawned and needs to be despawned
+        if airdropsData[selectedCoords] and airdropsData[selectedCoords].spawned then
+            airdropsData[selectedCoords].ticksToDespawn = getSandboxOptions():getOptionByName(
+                "RandomAirdrops.AirdropRemovalTimer"):getValue();
+            airdropsData[selectedCoords].shouldRespawn = true;
+            airdropsData[selectedCoords].despawnOnNextLoad = false;
+            airdropsData[selectedCoords].despawnTries = 0;
+
+            DebugPrintRandomAidrops("Respawn enabled for coords: " .. selectedCoords);
+            return selectedCoords;
+        else -- Normal airdrop spawn
+            local config = airdropConfigPositions[selectedCoords];
+
+            if not config then
+                DebugPrintRandomAidrops("Cannot generate airdrop data, configuration not exist for: " .. selectedCoords);
+                return nil;
+            end
+
+            airdropsData[selectedCoords] = {};
+            airdropsData[selectedCoords].name = config.name;
+            airdropsData[selectedCoords].algebricCoords = config.algebricCoords;
+            airdropsData[selectedCoords].spawned = false;
+            airdropsData[selectedCoords].ticksToDespawn = getSandboxOptions():getOptionByName(
+                "RandomAirdrops.AirdropRemovalTimer"):getValue();
+            airdropsData[selectedCoords].shouldRespawn = false;
+            airdropsData[selectedCoords].despawnOnNextLoad = false;
+            airdropsData[selectedCoords].despawnTries = 0;
+
+            return selectedCoords;
         end
-
-        airdropsData[selectedCoords] = {};
-        airdropsData[selectedCoords].name = config.name;
-        airdropsData[selectedCoords].algebricCoords = config.algebricCoords;
-        airdropsData[selectedCoords].spawned = false;
-        airdropsData[selectedCoords].ticksToDespawn = getSandboxOptions():getOptionByName(
-            "RandomAirdrops.AirdropRemovalTimer"):getValue();
-        airdropsData[selectedCoords].shouldRespawn = false;
-        airdropsData[selectedCoords].despawnOnNextLoad = false;
-        airdropsData[selectedCoords].despawnTries = 0;
-
-        return selectedCoords;
     end
 end
 
