@@ -1,3 +1,9 @@
+local debug = getSandboxOptions():getOptionByName(
+    "RandomAirdrops.AirdropConsoleDebug"):getValue();
+
+local debugCoords = getSandboxOptions():getOptionByName(
+    "RandomAirdrops.AirdropConsoleDebugCoordinates"):getValue();
+
 -- Stores the airdrops data
 -- {
 --  "10,10,1" = {
@@ -39,17 +45,17 @@ local airdropConfigLootTable = {};
 --#region Configs
 
 local function LoadAirdropPositions()
-    local path = "RandomAirdropsPositions.ini"
-    local fileReader = getFileReader(path, true)
+    local path = "RandomAirdropsPositions.ini";
+    local fileReader = getFileReader(path, true);
 
-    local lines = {}
+    local lines = {};
     if fileReader then
-        local line = fileReader:readLine()
+        local line = fileReader:readLine();
         while line do
-            table.insert(lines, line)
-            line = fileReader:readLine()
+            table.insert(lines, line);
+            line = fileReader:readLine();
         end
-        fileReader:close()
+        fileReader:close();
     end
 
     -- Default value if not exist
@@ -80,34 +86,34 @@ return {
     ["12227,1441,0"] = { name = "Louis_Ville", algebricCoords = "A1" }
 }
 ]]
-        local writer = getFileWriter(path, true, false)
+        local writer = getFileWriter(path, true, false);
         if writer then
-            writer:write(defaultContent)
-            writer:close()
+            writer:write(defaultContent);
+            writer:close();
         end
 
-        airdropConfigPositions = loadstring(defaultContent)()
+        airdropConfigPositions = loadstring(defaultContent)();
         DebugPrintRandomAidrops("Airdrop positions created with default content");
     else
-        airdropConfigPositions = loadstring(table.concat(lines, "\n"))() or { ["missing"] = {} }
-        DebugPrintRandomAidrops("Airdrop positions loaded")
+        airdropConfigPositions = loadstring(table.concat(lines, "\n"))() or { ["missing"] = {} };
+        DebugPrintRandomAidrops("Airdrop positions loaded");
     end
 end
 
 LoadAirdropPositions();
 
 local function LoadAirdropLootTable()
-    local path = "RandomAirdropsLootTable.ini"
-    local fileReader = getFileReader(path, true)
+    local path = "RandomAirdropsLootTable.ini";
+    local fileReader = getFileReader(path, true);
 
-    local lines = {}
+    local lines = {};
     if fileReader then
-        local line = fileReader:readLine()
+        local line = fileReader:readLine();
         while line do
-            table.insert(lines, line)
-            line = fileReader:readLine()
+            table.insert(lines, line);
+            line = fileReader:readLine();
         end
-        fileReader:close()
+        fileReader:close();
     end
 
     -- Default value if not exist
@@ -242,17 +248,17 @@ return {
     }
 }
 ]]
-        local writer = getFileWriter(path, true, false)
+        local writer = getFileWriter(path, true, false);
         if writer then
-            writer:write(defaultContent)
-            writer:close()
+            writer:write(defaultContent);
+            writer:close();
         end
 
-        airdropConfigLootTable = loadstring(defaultContent)()
+        airdropConfigLootTable = loadstring(defaultContent)();
         DebugPrintRandomAidrops("Airdrop loot table created with default content");
     else
-        airdropConfigLootTable = loadstring(table.concat(lines, "\n"))() or { ["missing"] = {} }
-        DebugPrintRandomAidrops("Airdrop loot table loaded")
+        airdropConfigLootTable = loadstring(table.concat(lines, "\n"))() or { ["missing"] = {} };
+        DebugPrintRandomAidrops("Airdrop loot table loaded");
     end
 end
 
@@ -264,14 +270,14 @@ LoadAirdropLootTable();
 
 -- Check if exist player reading the airdrop chunk
 local function checkPlayersAround(x, y, z)
-    -- Pikcup the airdrop square
+    -- Pickup the airdrop square
     local square = getCell():getGridSquare(x, y, z);
 
     -- If the square exist, theres is a player loading the chunk
     if square then
         return true;
     else
-        return false
+        return false;
     end
 end
 
@@ -461,14 +467,19 @@ local function generateAirdropData(specific)
 
             return specific.coords;
         else
-            DebugPrintRandomAidrops("Cannot generate airdrop data from specific object, the airdrop data already exists");
+            if debug then
+                DebugPrintRandomAidrops(
+                    "Cannot generate airdrop data from specific object, the airdrop data already exists");
+            end
             return nil;
         end
     else
         local availableCoords = getAvailableCoords();
 
         if #availableCoords == 0 then
-            DebugPrintRandomAidrops("Cannot generate airdrop data, no available coords to use");
+            if debug then
+                DebugPrintRandomAidrops("Cannot generate airdrop data, no available coords to use");
+            end
             return nil;
         end
 
@@ -501,8 +512,10 @@ local function spawnAirdrop(coordsStr, position)
     if square then
         local nearestVehicle = square:getVehicleContainer();
         if nearestVehicle then
-            DebugPrintRandomAidrops("Cannot spawn airdrop: " ..
-                coordsStr .. " something is blocking the airdrop to spawn");
+            if debugCoords then
+                DebugPrintRandomAidrops("Cannot spawn airdrop: " ..
+                    coordsStr .. " something is blocking the airdrop to spawn");
+            end
             return;
         end
 
@@ -512,15 +525,21 @@ local function spawnAirdrop(coordsStr, position)
             spawnAirdropItems(airdrop);
             airdropsData[coordsStr].spawned = true;
 
-            DebugPrintRandomAidrops("Aidrop physically spawned in: " ..
-                coordsStr);
+            if debugCoords then
+                DebugPrintRandomAidrops("Aidrop physically spawned in: " ..
+                    coordsStr);
+            end
         else
-            DebugPrintRandomAidrops("Cannot spawn airdrop: " ..
-                coordsStr .. " the airdrop did not spawn for some unkown reason");
+            if debugCoords then
+                DebugPrintRandomAidrops("Cannot spawn airdrop: " ..
+                    coordsStr .. " the airdrop did not spawn for some unkown reason");
+            end
         end
     else
-        DebugPrintRandomAidrops("Cannot spawn airdrop: " ..
-            coordsStr .. " chunk not loaded");
+        if debug then
+            DebugPrintRandomAidrops("Cannot spawn airdrop: " ..
+                coordsStr .. " chunk not loaded");
+        end
     end
 end
 
@@ -535,29 +554,42 @@ local function despawnAirdrop(coordsStr, position)
                 airdrop:permanentlyRemove();
                 airdropsData[coordsStr] = nil;
 
-                DebugPrintRandomAidrops("Airdrop (spawned) despawned: " ..
-                    coordsStr);
+                if debugCoords then
+                    DebugPrintRandomAidrops("Airdrop (spawned) despawned: " ..
+                        coordsStr);
+                end
             else
                 airdropsData[coordsStr].despawnTries = airdropsData[coordsStr].despawnTries + 1;
-                DebugPrintRandomAidrops("Airdrop (spawned) cannot despawn: " ..
-                    coordsStr .. " is not any airdrop in the position: " .. airdrop:getScriptName());
+
+                if debugCoords then
+                    DebugPrintRandomAidrops("Airdrop (spawned) cannot despawn: " ..
+                        coordsStr .. " is not any airdrop in the position: " .. airdrop:getScriptName());
+                end
             end
         else
             airdropsData[coordsStr].despawnTries = airdropsData[coordsStr].despawnTries + 1;
-            DebugPrintRandomAidrops("Airdrop (spawned) cannot despawn: " ..
-                coordsStr .. " no airdrop found");
+
+            if debugCoords then
+                DebugPrintRandomAidrops("Airdrop (spawned) cannot despawn: " ..
+                    coordsStr .. " no airdrop found");
+            end
         end
     else
         airdropsData[coordsStr].despawnTries = airdropsData[coordsStr].despawnTries + 1;
-        DebugPrintRandomAidrops("Airdrop (spawned) cannot despawn: " ..
-            coordsStr .. " chunk not loaded");
+
+        if debug then
+            DebugPrintRandomAidrops("Airdrop (spawned) cannot despawn: " ..
+                coordsStr .. " chunk not loaded");
+        end
     end
 
     if airdropsData[coordsStr].despawnTries >= 5 then
         airdropsData[coordsStr] = nil;
 
-        DebugPrintRandomAidrops("Airdrop (spawned) cannot despawn: " ..
-            coordsStr .. " giving up permanently after 5 tries");
+        if debugCoords then
+            DebugPrintRandomAidrops("Airdrop (spawned) cannot despawn: " ..
+                coordsStr .. " giving up permanently after 5 tries");
+        end
     end
 end
 
@@ -588,13 +620,18 @@ local function trySpawnAirdrop()
                             spawnAirdrop(receivedCoords, position);
                         end
                     else
-                        DebugPrintRandomAidrops("Cannot respawn the airdrop, the previously airdrop was not despawned: " ..
-                            coords);
+                        if debugCoords then
+                            DebugPrintRandomAidrops(
+                                "Cannot respawn the airdrop, the previously airdrop was not despawned: " ..
+                                coords);
+                        end
                     end
                 end
             else
-                DebugPrintRandomAidrops("Airdrop cannot be spawned in: " ..
-                    coords .. " chunk is not loaded");
+                if debug then
+                    DebugPrintRandomAidrops("Airdrop cannot be spawned in: " ..
+                        coords .. " chunk is not loaded");
+                end
             end
         end
     end
@@ -615,7 +652,10 @@ local function tryDespawnAirdrops()
             -- If not spawned we just delete from memory
             if not airdrop.spawned then
                 airdropsData[coords] = nil;
-                DebugPrintRandomAidrops("Airdrop (not spawned) removed in: " .. coords);
+
+                if debugCoords then
+                    DebugPrintRandomAidrops("Airdrop (not spawned) removed in: " .. coords);
+                end
             else
                 local position = getCoordsObjectFromStr(coords);
                 local isPlayerAround = checkPlayersAround(position.x, position.y, position.z);
@@ -623,12 +663,17 @@ local function tryDespawnAirdrops()
                 if isPlayerAround and airdrop.despawnOnNextLoad then         -- Player is loading the chunk and despawnOnNextLoad is true, remove the airdrop from existance
                     despawnAirdrop(coords, position);
                 elseif isPlayerAround and not airdrop.despawnOnNextLoad then -- Player is actually seeing the airdrop, do nothing
-                    DebugPrintRandomAidrops("Airdrop (spawned) cannot be removed in: " ..
-                        coords .. " a player is seeing it");
+                    if debugCoords then
+                        DebugPrintRandomAidrops("Airdrop (spawned) cannot be removed in: " ..
+                            coords .. " a player is seeing it");
+                    end
                 elseif not isPlayerAround then -- No chunks loaded cannot despawn
                     airdropsData[coords].despawnOnNextLoad = true;
-                    DebugPrintRandomAidrops("Airdrop (spawned) cannot be removed in: " ..
-                        coords .. " chunk is not loaded");
+
+                    if debug then
+                        DebugPrintRandomAidrops("Airdrop (spawned) cannot be removed in: " ..
+                            coords .. " chunk is not loaded");
+                    end
                 end
             end
         end
@@ -638,12 +683,16 @@ end
 -- Roll a chance to spawn any random airdrop
 local function rollChanceToSpawnAirdrop()
     local chance = ZombRand(0, 1000);
-    DebugPrintRandomAidrops("Rolling chance to spawn airdrop: " ..
-        getSandboxOptions():getOptionByName("RandomAirdrops.AirdropFrequency"):getValue() .. " >= " .. chance);
+    if debugCoords then
+        DebugPrintRandomAidrops("Rolling chance to spawn airdrop: " ..
+            getSandboxOptions():getOptionByName("RandomAirdrops.AirdropFrequency"):getValue() .. " >= " .. chance);
+    end
     if getSandboxOptions():getOptionByName("RandomAirdrops.AirdropFrequency"):getValue() >= chance then
         local coords = generateAirdropData();
         if coords then
-            DebugPrintRandomAidrops("Airdrop Spawned on " .. coords);
+            if debugCoords then
+                DebugPrintRandomAidrops("Airdrop Spawned on " .. coords);
+            end
 
             if RandomAidropsIsSinglePlayer then
                 local player = getPlayer();
