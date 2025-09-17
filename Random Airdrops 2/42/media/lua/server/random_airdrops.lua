@@ -431,6 +431,13 @@ local function getAvailableCoords()
                     available = false;
                     break;
                 end
+
+                local position = getCoordsObjectFromStr(iterationCoords);
+                -- Also not available if a player is seeing the airdrop
+                if checkPlayersAround(position.x, position.y, position.z) then
+                    available = false;
+                    break;
+                end
             end
         end
         if available then
@@ -574,6 +581,7 @@ local function despawnAirdrop(coordsStr, position)
                     DebugPrintRandomAidrops("Airdrop (spawned) despawned: " ..
                         coordsStr);
                 end
+                return;
             else
                 airdropsData[coordsStr].despawnTries = airdropsData[coordsStr].despawnTries + 1;
 
@@ -624,7 +632,7 @@ local function trySpawnAirdrop()
             if checkPlayersAround(position.x, position.y, position.z) then
                 if not airdrop.spawned then
                     spawnAirdrop(coords, position);
-                elseif airdrop.shouldRespawn then
+                elseif airdrop.shouldRespawn and airdrop.despawnOnNextLoad then
                     despawnAirdrop(coords, position);
                     if not airdropsData[coords] then
                         local specificObject = {};
@@ -732,6 +740,18 @@ local function rollChanceToSpawnAirdrop()
     end
 end
 
+-- Reduces all aidrops ticks to despawn to -1
+local function reduceTicksToDespawn()
+    for coords, airdrop in pairs(airdropsData) do
+        if airdropsData[coords].ticksToDespawn > 0 then
+            airdropsData[coords].ticksToDespawn = airdropsData[coords].ticksToDespawn - 1;
+            if debug then
+                DebugPrintRandomAidrops(coords .. " updated ticksToDespawn to: " .. airdropsData[coords].ticksToDespawn);
+            end
+        end
+    end
+end
+
 --#endregion
 
 --#region API
@@ -756,5 +776,6 @@ Events.OnInitGlobalModData.Add(function(isNewGame)
     airdropsData = ModData.getOrCreate("RandomAirdropsData");
 end)
 Events.EveryHours.Add(rollChanceToSpawnAirdrop);
+Events.EveryHours.Add(reduceTicksToDespawn);
 Events.OnTick.Add(trySpawnAirdrop);
 Events.OnTick.Add(tryDespawnAirdrops);
