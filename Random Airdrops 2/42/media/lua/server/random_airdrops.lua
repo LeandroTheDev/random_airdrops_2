@@ -733,11 +733,12 @@ local function rollChanceToSpawnAirdrop()
                 player:Say(getText("IGUI_Airdrop_Incoming", airdropsData[coords].algebricCoords,
                     getText("IGUI_Airdrop_" .. airdropsData[coords].name)));
             else
+                local position = getCoordsObjectFromStr(coords);
                 local players = getOnlinePlayers();
                 for i = 0, players:size() - 1 do
                     local player = players:get(i)
                     sendServerCommand(player, "RandomAirdrops", "newAirdrop",
-                        { name = airdropsData[coords].name, algebricCoords = airdropsData[coords].algebricCoords });
+                        { name = airdropsData[coords].name, algebricCoords = airdropsData[coords].algebricCoords, x = position.x, y = position.y });
                 end
             end
         end

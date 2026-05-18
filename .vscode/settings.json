@@ -20,6 +20,7 @@
         "isServer",
         "Calendar",
         "SimpleDateFormat",
-        "ISChat"
+        "ISChat",
+        "ISWorldMap"
     ]
 }

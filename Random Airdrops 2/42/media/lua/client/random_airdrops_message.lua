@@ -59,9 +59,23 @@ local function OnServerCommand(module, command, arguments)
 		getSoundManager():PlayAsMusic(alarmSound, sound, false, 0);
 		sound:setVolume(0.1);
 
-		addLineToChat(
-			getText("IGUI_Airdrop_Incoming", arguments.algebricCoords, getText("IGUI_Airdrop_" .. arguments.name)),
-			"<RGB:" .. "0,255,0" .. ">");
+		if getSandboxOptions():getOptionByName(
+				"RandomAirdrops.AirdropAlertOnChat"):getValue() then
+			addLineToChat(
+				getText("IGUI_Airdrop_Incoming", arguments.algebricCoords, getText("IGUI_Airdrop_" .. arguments.name)),
+				"<RGB:" .. "0,255,0" .. ">");
+		end
+		if getSandboxOptions():getOptionByName(
+				"RandomAirdrops.AirdropShowOnMap"):getValue() then
+			if ISWorldMap and ISWorldMap.instance then
+				local mapAPI = ISWorldMap.instance.javaObject:getAPIv3()
+				local symbolsAPI = mapAPI:getSymbolsAPIv2()
+				local symbol = symbolsAPI:addTexture("Target", arguments.x, arguments.y)
+				symbol:setRGBA(1.0, 0.65, 0.0, 1.0)
+				symbol:setAnchor(0.5, 0.5)
+				symbol:setScale(1.0)
+			end
+		end
 	end
 end
 Events.OnServerCommand.Add(OnServerCommand)
