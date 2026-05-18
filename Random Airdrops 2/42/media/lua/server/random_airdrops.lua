@@ -92,10 +92,10 @@ return {
             writer:close();
         end
 
-        airdropConfigPositions = loadstring(defaultContent)();
+        airdropConfigPositions = load(defaultContent)();
         DebugPrintRandomAidrops("Airdrop positions created with default content");
     else
-        airdropConfigPositions = loadstring(table.concat(lines, "\n"))() or { ["missing"] = {} };
+        airdropConfigPositions = load(table.concat(lines, "\n"))() or { ["missing"] = {} };
         DebugPrintRandomAidrops("Airdrop positions loaded");
     end
 end
@@ -254,10 +254,10 @@ return {
             writer:close();
         end
 
-        airdropConfigLootTable = loadstring(defaultContent)();
+        airdropConfigLootTable = load(defaultContent)();
         DebugPrintRandomAidrops("Airdrop loot table created with default content");
     else
-        airdropConfigLootTable = loadstring(table.concat(lines, "\n"))() or { ["missing"] = {} };
+        airdropConfigLootTable = load(table.concat(lines, "\n"))() or { ["missing"] = {} };
         DebugPrintRandomAidrops("Airdrop loot table loaded");
     end
 end
@@ -313,7 +313,11 @@ local function spawnAirdropItems(airdrop)
 
     -- Type: item
     local function spawnItem(child)
-        airdropContainer:AddItem(child);
+        local item = instanceItem(child)
+        if item then
+            airdropContainer:AddItem(item)
+            sendAddItemToContainer(airdropContainer, item)
+        end
     end
 
     -- Type: combo

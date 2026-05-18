@@ -1,0 +1,24 @@
+{
+    "Lua.diagnostics.globals": [
+        "getFileReader",
+        "getFileWriter",
+        "getSandboxOptions",
+        "getCell",
+        "sendAddItemToContainer",
+        "instanceItem",
+        "ZombRand",
+        "addVehicleDebug",
+        "IsoDirections",
+        "getSoundManager",
+        "getOnlinePlayers",
+        "getText",
+        "sendServerCommand",
+        "Events",
+        "ModData",
+        "getPlayer",
+        "isClient",
+        "isServer",
+        "Calendar",
+        "SimpleDateFormat"
+    ]
+}
