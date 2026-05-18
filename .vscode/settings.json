@@ -19,6 +19,7 @@
         "isClient",
         "isServer",
         "Calendar",
-        "SimpleDateFormat"
+        "SimpleDateFormat",
+        "ISChat"
     ]
 }

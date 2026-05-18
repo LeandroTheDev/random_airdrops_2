@@ -30,6 +30,22 @@ option RandomAirdrops.AirdropTickCheck
 	translation = RandomAirdrops_AirdropTickCheck,
 }
 
+option RandomAirdrops.AirdropShowOnMap
+{
+	type = boolean,
+	default = false,
+	page = Airdrop,
+	translation = RandomAirdrops_AirdropShowOnMap,
+}
+
+option RandomAirdrops.AirdropAlertOnChat
+{
+	type = boolean,
+	default = false,
+	page = Airdrop,
+	translation = RandomAirdrops_AirdropAlertOnChat,
+}
+
 option RandomAirdrops.AirdropConsoleDebug
 {
 	type = boolean,
