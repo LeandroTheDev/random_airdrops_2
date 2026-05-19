@@ -92,10 +92,12 @@ return {
             writer:close();
         end
 
-        airdropConfigPositions = load(defaultContent)();
+        local defaultFn = loadstring(defaultContent);
+        airdropConfigPositions = defaultFn and defaultFn() or {};
         DebugPrintRandomAidrops("Airdrop positions created with default content");
     else
-        airdropConfigPositions = load(table.concat(lines, "\n"))() or { ["missing"] = {} };
+        local fn = loadstring(table.concat(lines, "\n"));
+        airdropConfigPositions = fn and fn() or { ["missing"] = {} };
         DebugPrintRandomAidrops("Airdrop positions loaded");
     end
 end
@@ -254,10 +256,12 @@ return {
             writer:close();
         end
 
-        airdropConfigLootTable = load(defaultContent)();
+        local defaultFn = loadstring(defaultContent);
+        airdropConfigLootTable = defaultFn and defaultFn() or {};
         DebugPrintRandomAidrops("Airdrop loot table created with default content");
     else
-        airdropConfigLootTable = load(table.concat(lines, "\n"))() or { ["missing"] = {} };
+        local fn = loadstring(table.concat(lines, "\n"));
+        airdropConfigLootTable = fn and fn() or { ["missing"] = {} };
         DebugPrintRandomAidrops("Airdrop loot table loaded");
     end
 end
