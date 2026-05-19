@@ -33,7 +33,7 @@ option RandomAirdrops.AirdropTickCheck
 option RandomAirdrops.AirdropShowOnMap
 {
 	type = boolean,
-	default = false,
+	default = true,
 	page = Airdrop,
 	translation = RandomAirdrops_AirdropShowOnMap,
 }
@@ -41,7 +41,7 @@ option RandomAirdrops.AirdropShowOnMap
 option RandomAirdrops.AirdropAlertOnChat
 {
 	type = boolean,
-	default = false,
+	default = true,
 	page = Airdrop,
 	translation = RandomAirdrops_AirdropAlertOnChat,
 }
